@@ -4,7 +4,7 @@
     jmp start
 .segment "CODE"
 
-ZP = $20
+ZP = $22
 
 ; VERA
 VERA_addr_L   = $9F20
