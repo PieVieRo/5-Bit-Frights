@@ -224,6 +224,8 @@ custom_irq_handler:
     bit #SCREEN_MOVE_RIGHT ; move screen to the right
     bne @try_move_right
     bra @continue
+
+; CHECKING LEFT SIDE
 @try_move_left:
     lda VERA_L1_HS_L
     beq @check_high_byte_left
@@ -236,19 +238,27 @@ custom_irq_handler:
     lda #$FF
     sta VERA_L1_HS_L
     bra @continue
+
+; CHECKING RIGHT SIDE
 @try_move_right:
-    lda VERA_L1_HS_L
-    cmp #$FF
-    beq @check_high_byte_right
+    ldx VERA_L1_HS_H
+    beq @check_full_right
+    ldy VERA_L1_HS_L
+    cpy #$7F
+    beq @continue
     inc VERA_L1_HS_L
     bra @continue
-@check_high_byte_right:
-    lda VERA_L1_HS_H
-    cmp #$01
-    beq @continue
+@check_full_right:
+    ldy VERA_L1_HS_L
+    cpy #$FF
+    beq @add_high_hs
+    inc VERA_L1_HS_L
+    bra @continue
+@add_high_hs:
     inc VERA_L1_HS_H
     stz VERA_L1_HS_L
     bra @continue
+
 @continue:
     jmp (default_irq_handler)
 
