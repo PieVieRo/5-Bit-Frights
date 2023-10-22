@@ -229,12 +229,14 @@ custom_irq_handler:
 @try_move_left:
     lda VERA_L1_HS_L
     beq @check_high_byte_left
-    dec VERA_L1_HS_L
+    dec
+    sta VERA_L1_HS_L
     bra @continue
 @check_high_byte_left:
     lda VERA_L1_HS_H
     beq @continue
-    dec VERA_L1_HS_H
+    dec
+    sta VERA_L1_HS_H
     lda #$FF
     sta VERA_L1_HS_L
     bra @continue
@@ -246,16 +248,19 @@ custom_irq_handler:
     ldy VERA_L1_HS_L
     cpy #$7F
     beq @continue
-    inc VERA_L1_HS_L
+    iny
+    sty VERA_L1_HS_L
     bra @continue
 @check_full_right:
     ldy VERA_L1_HS_L
     cpy #$FF
     beq @add_high_hs
-    inc VERA_L1_HS_L
+    iny
+    sty VERA_L1_HS_L
     bra @continue
 @add_high_hs:
-    inc VERA_L1_HS_H
+    inx
+    stx VERA_L1_HS_H
     stz VERA_L1_HS_L
     bra @continue
 
