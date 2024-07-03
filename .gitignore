@@ -1,2 +1,4 @@
 *.PRG
+*.asm
 *.txt
+*.vice.mon.list
